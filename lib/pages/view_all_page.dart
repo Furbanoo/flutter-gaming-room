@@ -6,7 +6,8 @@ import 'package:gameroom/models/games_list.dart';
 import 'package:provider/provider.dart';
 
 class ViewAllPage extends StatefulWidget {
-  const ViewAllPage({super.key});
+  final String title;
+  const ViewAllPage({super.key, required this.title});
 
   @override
   State<ViewAllPage> createState() => _ViewAllPageState();
@@ -56,6 +57,7 @@ class _ViewAllPageState extends State<ViewAllPage> {
     }
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -77,7 +79,7 @@ class _ViewAllPageState extends State<ViewAllPage> {
                 ),
                 const Spacer(),
                 Text(
-                  'Novos Lançamentos'.toUpperCase(),
+                  widget.title.toUpperCase(),
                   style: TextStyle(
                     fontSize: 15.0,
                     fontWeight: FontWeight.bold,

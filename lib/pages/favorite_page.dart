@@ -12,27 +12,50 @@ class FavoritePage extends StatefulWidget {
 class _FavoritePageState extends State<FavoritePage> {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: TextButton(
-        child: (Theme.of(context).brightness == Brightness.light
-            ? Text(
-                'Modo Diurno',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 40,
+              left: 10,
+            ),
+            child: Row(
+              children: [
+                const Spacer(),
+                const Spacer(),
+                Text(
+                  'Meus Jogos Favoritos'.toUpperCase(),
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              )
-            : Text(
-                'Modo Noturno',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
+                const Spacer(),
+                Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: IconButton(
+                    icon: Icon(
+                      Theme.of(context).brightness == Brightness.light
+                          ? Icons.light_mode
+                          : Icons.dark_mode,
+                    ),
+                    onPressed: () {
+                      Provider.of<ThemeProvider>(
+                        context,
+                        listen: false,
+                      ).toggleTheme();
+                    },
+                  ),
                 ),
-              )),
-        onPressed: () {
-          Provider.of<ThemeProvider>(
-            context,
-            listen: false,
-          ).toggleTheme();
-        },
+              ],
+            ),
+          ),
+
+          ///
+        ],
       ),
     );
   }

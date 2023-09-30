@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gameroom/models/consoles.dart';
+import 'package:gameroom/models/consoles_list.dart';
 import 'package:gameroom/models/games.dart';
 import 'package:gameroom/models/games_list.dart';
 import 'package:gameroom/pages/tabs_page.dart';
@@ -9,7 +11,7 @@ void main() {
   runApp(
     ChangeNotifierProvider(
       create: (_) => ThemeProvider(),
-      child: const MyApp(),
+      child: MyApp(),
     ),
   );
 }
@@ -40,6 +42,12 @@ class _MyAppState extends State<MyApp> {
         ),
         ChangeNotifierProvider(
           create: (_) => GamesList(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ConsolesList(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => Consoles(background: '', title: ''),
         ),
       ],
       child: MaterialApp(

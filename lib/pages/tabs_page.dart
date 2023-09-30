@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gameroom/pages/favorite_page.dart';
 import 'package:gameroom/pages/home_page.dart';
+import 'package:gameroom/pages/console_page.dart';
 import 'package:gameroom/pages/search_page.dart';
 
 class TabsPage extends StatefulWidget {
@@ -19,15 +20,15 @@ class _TabsPageState extends State<TabsPage> {
     super.initState();
     _screens = [
       {
-        'title': '',
         'screen': const HomePage(),
       },
       {
-        'title': 'Pesquisar',
         'screen': const SearchPage(),
       },
       {
-        'title': 'Categorias',
+        'screen': const ConsolePage(),
+      },
+      {
         'screen': const FavoritePage(),
       },
     ];
@@ -60,6 +61,11 @@ class _TabsPageState extends State<TabsPage> {
             backgroundColor: Theme.of(context).colorScheme.primary,
             icon: const Icon(Icons.search),
             label: 'Pesquisar',
+          ),
+          BottomNavigationBarItem(
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            icon: const Icon(Icons.sports_esports),
+            label: 'Plataformas',
           ),
           BottomNavigationBarItem(
             backgroundColor: Theme.of(context).colorScheme.primary,

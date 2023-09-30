@@ -64,7 +64,7 @@ class GameContainerItem extends StatelessWidget {
                       height: 5,
                     ),
                     Text(
-                      games.platform.toString(),
+                      games.publisher.toString(),
                       maxLines: 2,
                       overflow: TextOverflow.fade,
                       style: TextStyle(fontSize: 12.0, color: Colors.grey),

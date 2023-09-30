@@ -11,6 +11,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final List<String> titles = [
+    'Novos Lançamentos',
+    'Novos jogos de Xbox One',
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +32,7 @@ class _HomePageState extends State<HomePage> {
               child: Row(
                 children: [
                   Text(
-                    "Novos Lançamentos".toUpperCase(),
+                    titles[0].toUpperCase(),
                     style: TextStyle(
                       fontSize: 15.0,
                       fontWeight: FontWeight.bold,
@@ -40,7 +44,7 @@ class _HomePageState extends State<HomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ViewAllPage(),
+                          builder: (context) => ViewAllPage(title: titles[0]),
                         ),
                       );
                     },
@@ -64,7 +68,7 @@ class _HomePageState extends State<HomePage> {
               child: Row(
                 children: [
                   Text(
-                    "Novos Jogos de Xbox One".toUpperCase(),
+                    titles[1].toUpperCase(),
                     style: TextStyle(
                       fontSize: 15.0,
                       fontWeight: FontWeight.bold,
@@ -76,7 +80,9 @@ class _HomePageState extends State<HomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ViewAllPage(),
+                          builder: (context) => ViewAllPage(
+                            title: titles[1],
+                          ),
                         ),
                       );
                     },
