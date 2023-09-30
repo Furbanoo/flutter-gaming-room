@@ -17,6 +17,7 @@ class _SearchPageState extends State<SearchPage> {
     final provider = Provider.of<GamesList>(context);
     final List<Games> loadedGames = provider.games;
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.primary,
       body: Column(
         children: [
           Padding(
