@@ -12,7 +12,7 @@ class HorizontalGrid extends StatelessWidget {
     final provider = Provider.of<GamesList>(context);
     final List<Games> loadedGames = provider.games;
     return SizedBox.fromSize(
-      size: const Size.fromHeight(280),
+      size: const Size.fromHeight(200),
       child: ListView.builder(
         itemCount: loadedGames.length,
         scrollDirection: Axis.horizontal,

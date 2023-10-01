@@ -47,30 +47,6 @@ class GameContainerItem extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-            Padding(padding: const EdgeInsets.only(top: 6)),
-            ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 120),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      games.title,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          fontSize: 14.0, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      games.publisher.toString(),
-                      maxLines: 2,
-                      overflow: TextOverflow.fade,
-                      style: TextStyle(fontSize: 12.0, color: Colors.grey),
-                    ),
-                  ],
-                ))
           ],
         ),
       ),

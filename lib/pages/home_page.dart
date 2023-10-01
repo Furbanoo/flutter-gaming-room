@@ -12,8 +12,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final List<String> titles = [
-    'Novos Lançamentos',
-    'Novos jogos de Xbox One',
+    'Últimos Lançamentos',
+    'Lançamentos Futuros',
+    'Os mais bem avaliados',
+    'Mais esperados',
   ];
   @override
   Widget build(BuildContext context) {
@@ -61,10 +63,7 @@ class _HomePageState extends State<HomePage> {
             ),
             HorizontalGrid(),
             Padding(
-              padding: const EdgeInsets.only(
-                top: 20,
-                left: 10,
-              ),
+              padding: const EdgeInsets.only(left: 10.0, top: 10.0),
               child: Row(
                 children: [
                   Text(
@@ -98,6 +97,99 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             HorizontalGrid(),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: InkWell(
+                onTap: () {},
+                borderRadius: BorderRadius.circular(16.0),
+                splashColor: Theme.of(context).colorScheme.primary,
+                child: Container(
+                  padding: const EdgeInsets.all(4),
+                  height: 80,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16.0),
+                    gradient: LinearGradient(
+                      colors: [
+                        Theme.of(context)
+                            .colorScheme
+                            .onPrimary
+                            .withOpacity(1.0),
+                        Theme.of(context).colorScheme.onPrimary,
+                      ],
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        'lib/assets/images/trophy.png',
+                        fit: BoxFit.contain,
+                        width: 140,
+                      ),
+                      Column(
+                        children: [
+                          Spacer(),
+                          Text(
+                            titles[2],
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text('Ver todos'),
+                          Spacer(),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: InkWell(
+                onTap: () {},
+                borderRadius: BorderRadius.circular(16.0),
+                splashColor: Theme.of(context).colorScheme.onSecondary,
+                child: Container(
+                  padding: const EdgeInsets.all(4),
+                  height: 80,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16.0),
+                    gradient: LinearGradient(
+                      colors: [
+                        Theme.of(context)
+                            .colorScheme
+                            .onSecondary
+                            .withOpacity(1.0),
+                        Theme.of(context).colorScheme.onSecondary,
+                      ],
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        'lib/assets/images/fire.png',
+                        fit: BoxFit.contain,
+                        width: 140,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            titles[3],
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text('Ver todos'),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
