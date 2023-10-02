@@ -7,8 +7,8 @@ class Games with ChangeNotifier {
   final String video;
   final List<String> genres;
   final List<String> platform;
-  final String releaseDate;
-  final List<String> publisher;
+  final List<String> releaseDate;
+  final String publisher;
 
   Games({
     required this.cover,

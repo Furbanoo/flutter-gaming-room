@@ -10,8 +10,8 @@ final dummyGames = [
     video: 'https://www.youtube.com/watch?v=ERgrFVhL-n4',
     genres: ['Ação', 'Aventura', 'RPG'],
     platform: ['Playstation 4', 'Playstation 5', 'PC'],
-    publisher: ['Square Enix', 'Creative Business Unit I'],
-    releaseDate: '10/04/2020',
+    publisher: 'Square Enix',
+    releaseDate: ['10/04/2020', '10/04/2020', '10/04/2020'],
   ),
   Games(
     cover:
@@ -22,8 +22,8 @@ final dummyGames = [
     video: 'https://www.youtube.com/watch?v=jCB36uNrZ9I',
     genres: ['Ação', 'Aventura', 'RPG', 'Luta'],
     platform: ['Playstation 4', 'Playstation 5', 'PC'],
-    publisher: ['Santa Monica Studio', 'Sony Interactive Entertainment'],
-    releaseDate: '20/04/2018',
+    publisher: 'Santa Monica Studio',
+    releaseDate: ['10/04/2020', '10/04/2020', '10/04/2020'],
   ),
   Games(
     cover:
@@ -34,8 +34,8 @@ final dummyGames = [
     video: 'https://www.youtube.com/watch?v=16RlfA39vhM',
     genres: ['Ação', 'Aventura', 'Survival Horror', 'Tiro'],
     platform: ['Playstation 4'],
-    publisher: ['Naughty Dog', 'Sony Interactive Entertainment'],
-    releaseDate: '19/06/2020',
+    publisher: 'Naughty Dog',
+    releaseDate: ['10/04/2020'],
   ),
   Games(
     cover:
@@ -46,8 +46,8 @@ final dummyGames = [
     video: 'https://www.youtube.com/watch?v=q4GdJVvdxss',
     genres: ['Ação', 'Aventura', 'Mundo Aberto'],
     platform: ['Playstation 4', 'Playstation 5', 'PC'],
-    publisher: ['Insomniac Games'],
-    releaseDate: '07/09/2018',
+    publisher: 'Insomniac Games',
+    releaseDate: ['10/04/2020', '10/04/2020', '10/04/2020'],
   ),
   Games(
     cover: 'https://live.staticflickr.com/65535/50542067131_762c2f45e2_o.png',
@@ -57,8 +57,8 @@ final dummyGames = [
     video: 'https://www.youtube.com/watch?v=n5t4aAbPffE',
     genres: ['Ação', 'Aventura', 'RPG'],
     platform: ['Playstation 5', 'PC'],
-    publisher: ['Square Enix', 'Creative Business Unit III'],
-    releaseDate: '22/06/2023',
+    publisher: 'Square Enix',
+    releaseDate: ['10/04/2020', '10/04/2020'],
   ),
   Games(
     cover:
@@ -76,7 +76,14 @@ final dummyGames = [
       'Xbox Series X',
       'PC',
     ],
-    publisher: ['Ivory Tower', 'Ubisoft'],
-    releaseDate: '11/09/2023',
+    publisher: 'Ivory Tower',
+    releaseDate: [
+      '10/04/2020',
+      '10/04/2020',
+      '10/04/2020',
+      '10/04/2020',
+      '10/04/2020',
+      '10/04/2020'
+    ],
   ),
 ];

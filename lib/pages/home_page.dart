@@ -126,17 +126,22 @@ class _HomePageState extends State<HomePage> {
                         width: 140,
                       ),
                       Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Spacer(),
                           Text(
                             titles[2],
                             style: TextStyle(
                               fontSize: 16.0,
                               fontWeight: FontWeight.bold,
+                              color: Colors.white,
                             ),
                           ),
-                          Text('Ver todos'),
-                          Spacer(),
+                          Text(
+                            'Ver todos',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
                         ],
                       ),
                     ],
@@ -180,9 +185,15 @@ class _HomePageState extends State<HomePage> {
                             style: TextStyle(
                               fontSize: 16.0,
                               fontWeight: FontWeight.bold,
+                              color: Colors.white,
                             ),
                           ),
-                          Text('Ver todos'),
+                          Text(
+                            'Ver todos',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
                         ],
                       ),
                     ],

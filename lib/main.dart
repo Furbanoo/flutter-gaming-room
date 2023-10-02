@@ -36,8 +36,8 @@ class _MyAppState extends State<MyApp> {
             video: '',
             genres: [''],
             platform: [''],
-            publisher: [''],
-            releaseDate: '',
+            publisher: '',
+            releaseDate: [''],
           ),
         ),
         ChangeNotifierProvider(
