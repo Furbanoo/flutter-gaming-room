@@ -38,7 +38,7 @@ class GameContainerItem extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               clipBehavior: Clip.hardEdge,
               elevation: 5,
-              shadowColor: Color(0xCC000000),
+              shadowColor: const Color(0xCC000000),
               child: Image.network(
                 games.cover,
                 //placeholder: "assets/placeholder_box.png",

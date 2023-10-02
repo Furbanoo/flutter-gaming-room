@@ -38,8 +38,8 @@ class _CarouselState extends State<Carousel> {
     return CarouselSlider(
       options: CarouselOptions(
         autoPlay: true,
-        autoPlayInterval: Duration(seconds: 5),
-        autoPlayAnimationDuration: Duration(milliseconds: 1800),
+        autoPlayInterval: const Duration(seconds: 5),
+        autoPlayAnimationDuration: const Duration(milliseconds: 1800),
         height: MediaQuery.of(context).size.height / 3,
         enlargeCenterPage: true,
         viewportFraction: 1,

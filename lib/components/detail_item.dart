@@ -16,13 +16,13 @@ class DetailItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
+      padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
       child: Container(
         width: 160,
-        padding: EdgeInsets.all(5.0),
+        padding: const EdgeInsets.all(5.0),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.inversePrimary,
-          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          borderRadius: const BorderRadius.all(Radius.circular(5.0)),
           border: Border.all(
             width: 1.0,
             color: Theme.of(context).colorScheme.inversePrimary,
@@ -40,10 +40,10 @@ class DetailItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 5.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
                     child: Text(
                       title,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 12.0,
                         color: Colors.white,
@@ -53,13 +53,14 @@ class DetailItem extends StatelessWidget {
                   name != null
                       ? Text(
                           name!,
-                          style: TextStyle(color: Colors.white, fontSize: 10.0),
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 10.0),
                         )
                       : Container(),
                 ],
               ),
-              Spacer(),
-              Icon(
+              const Spacer(),
+              const Icon(
                 Icons.arrow_forward,
                 size: 16,
                 color: Colors.white,

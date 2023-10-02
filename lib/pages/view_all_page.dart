@@ -42,7 +42,7 @@ class _ViewAllPageState extends State<ViewAllPage> {
                 const Spacer(),
                 Text(
                   widget.title.toUpperCase(),
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 15.0,
                     fontWeight: FontWeight.bold,
                   ),
@@ -51,7 +51,7 @@ class _ViewAllPageState extends State<ViewAllPage> {
                 Padding(
                   padding: const EdgeInsets.only(right: 10),
                   child: IconButton(
-                    icon: Icon(Icons.filter_alt),
+                    icon: const Icon(Icons.filter_alt),
                     onPressed: () {},
                   ),
                 ),

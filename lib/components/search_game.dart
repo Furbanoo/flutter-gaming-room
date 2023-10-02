@@ -44,7 +44,7 @@ class _SearchGameState extends State<SearchGame> {
         child: Row(
           children: <Widget>[
             ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+              borderRadius: const BorderRadius.all(Radius.circular(10.0)),
               child: Image.network(
                 games.cover,
                 width: 100,
@@ -59,17 +59,18 @@ class _SearchGameState extends State<SearchGame> {
                 children: <Widget>[
                   Text(
                     games.title,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 5.0),
+                  const SizedBox(height: 5.0),
                   Text(
                     'Data de Lançamento: ${games.releaseDate}',
-                    style: TextStyle(fontSize: 12),
+                    style: const TextStyle(fontSize: 12),
                   ),
-                  SizedBox(height: 5.0),
+                  const SizedBox(height: 5.0),
                   AutoSizeText(
                     'Desenvolvedor: ${games.publisher.toString()}',
-                    style: TextStyle(fontSize: 12),
+                    style: const TextStyle(fontSize: 12),
                     maxLines: 3,
                   ),
                 ],

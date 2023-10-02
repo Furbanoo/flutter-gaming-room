@@ -19,7 +19,7 @@ class HorizontalGrid extends StatelessWidget {
         padding: const EdgeInsets.only(left: 10, top: 5),
         itemBuilder: (BuildContext ctx, int i) => ChangeNotifierProvider.value(
           value: loadedGames[i],
-          child: GameContainerItem(),
+          child: const GameContainerItem(),
         ),
       ),
     );

@@ -27,10 +27,6 @@ class _ConsoleItemState extends State<ConsoleItem> {
       splashColor: Theme.of(context).colorScheme.primary,
       child: Container(
         padding: const EdgeInsets.all(4),
-        child: Image.network(
-          consoles.background,
-          fit: BoxFit.contain,
-        ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16.0),
           gradient: LinearGradient(
@@ -39,6 +35,10 @@ class _ConsoleItemState extends State<ConsoleItem> {
               Theme.of(context).colorScheme.secondary,
             ],
           ),
+        ),
+        child: Image.network(
+          consoles.background,
+          fit: BoxFit.contain,
         ),
       ),
     );

@@ -67,9 +67,9 @@ class _GamePageState extends State<GamePage>
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
-                  child: const Text(
+                const Padding(
+                  padding: EdgeInsets.only(top: 20.0, bottom: 10.0),
+                  child: Text(
                     'Datas de Lançamento',
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
@@ -89,7 +89,7 @@ class _GamePageState extends State<GamePage>
           );
         }
         if (title == "language") {
-          return Center();
+          return const Center();
         }
         if (title == "storyline") {
           return Container(
@@ -99,9 +99,9 @@ class _GamePageState extends State<GamePage>
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
-                  child: const Text(
+                const Padding(
+                  padding: EdgeInsets.only(top: 20.0, bottom: 10.0),
+                  child: Text(
                     'Enredo do Jogo',
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
@@ -116,7 +116,7 @@ class _GamePageState extends State<GamePage>
                     softWrap: true,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.justify,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 11.0,
                     ),
                   ),
@@ -125,9 +125,9 @@ class _GamePageState extends State<GamePage>
             ),
           );
         }
-        return Center();
+        return const Center();
       },
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(20),
         ),
@@ -207,10 +207,10 @@ class _GamePageState extends State<GamePage>
             tabs: tabs.map((Item tab) {
               return Center(
                 child: Container(
-                    padding: EdgeInsets.only(bottom: 8.0, top: 8.0),
+                    padding: const EdgeInsets.only(bottom: 8.0, top: 8.0),
                     child: Text(tab.name,
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 13.0,
                         ))),
               );
@@ -236,7 +236,7 @@ class _GamePageState extends State<GamePage>
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           Icon(
@@ -249,7 +249,7 @@ class _GamePageState extends State<GamePage>
                                 color: Colors.yellow.shade700,
                                 fontWeight: FontWeight.bold),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           IconButton(
@@ -289,7 +289,7 @@ class _GamePageState extends State<GamePage>
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ViewAllPage(
+                                  builder: (context) => const ViewAllPage(
                                     title: 'TESTEEE',
                                   ),
                                 ),
@@ -303,7 +303,7 @@ class _GamePageState extends State<GamePage>
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ViewAllPage(
+                                  builder: (context) => const ViewAllPage(
                                     title: 'TESTEEE',
                                   ),
                                 ),
@@ -322,7 +322,7 @@ class _GamePageState extends State<GamePage>
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ViewAllPage(
+                                  builder: (context) => const ViewAllPage(
                                     title: 'TESTEEE',
                                   ),
                                 ),
@@ -337,7 +337,7 @@ class _GamePageState extends State<GamePage>
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ViewAllPage(
+                                  builder: (context) => const ViewAllPage(
                                     title: 'TESTEEE',
                                   ),
                                 ),
@@ -357,7 +357,7 @@ class _GamePageState extends State<GamePage>
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ViewAllPage(
+                                  builder: (context) => const ViewAllPage(
                                     title: 'TESTEEE',
                                   ),
                                 ),
@@ -373,8 +373,8 @@ class _GamePageState extends State<GamePage>
                           ),
                         ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
+                      const Padding(
+                        padding: EdgeInsets.all(10.0),
                         child: Text(
                           'GÊNERO',
                           style: TextStyle(
@@ -389,14 +389,14 @@ class _GamePageState extends State<GamePage>
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ViewAllPage(
+                                builder: (context) => const ViewAllPage(
                                   title: 'aaaaa',
                                 ),
                               ),
                             );
                           }),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
+                      const Padding(
+                        padding: EdgeInsets.all(10.0),
                         child: Text(
                           'TAGs',
                           style: TextStyle(
@@ -411,15 +411,15 @@ class _GamePageState extends State<GamePage>
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ViewAllPage(
+                              builder: (context) => const ViewAllPage(
                                 title: 'BBBBB',
                               ),
                             ),
                           );
                         },
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10.0, left: 10.0),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 10.0, left: 10.0),
                         child: Text(
                           'RESUMO',
                           style: TextStyle(
@@ -436,7 +436,7 @@ class _GamePageState extends State<GamePage>
                           softWrap: true,
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.justify,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 11.0,
                           ),
                         ),
@@ -476,7 +476,7 @@ class _GamePageState extends State<GamePage>
                                   child: AspectRatio(
                                     aspectRatio: 4 / 3,
                                     child: Container(
-                                      decoration: BoxDecoration(
+                                      decoration: const BoxDecoration(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(5.0)),
                                         image: DecorationImage(
@@ -494,9 +494,7 @@ class _GamePageState extends State<GamePage>
                     )
                   ],
                 ),
-                Container(
-                  child: Text('Testeeee 3'),
-                ),
+                const Text('Testeeee 3'),
               ],
             ),
           ),

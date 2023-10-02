@@ -21,7 +21,7 @@ class _BadgeInformationState extends State<BadgeInformation> {
       onTap: widget.onPressed,
       child: Container(
         height: 30.0,
-        padding: EdgeInsets.only(
+        padding: const EdgeInsets.only(
           left: 10.0,
           top: 5.0,
         ),
@@ -30,11 +30,11 @@ class _BadgeInformationState extends State<BadgeInformation> {
           itemCount: widget.information.length,
           itemBuilder: (ctx, i) {
             return Padding(
-              padding: EdgeInsets.only(right: 10.0),
+              padding: const EdgeInsets.only(right: 10.0),
               child: Container(
-                padding: EdgeInsets.all(5.0),
+                padding: const EdgeInsets.all(5.0),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    borderRadius: const BorderRadius.all(Radius.circular(5.0)),
                     border: Border.all(
                         width: 1.0,
                         color: Theme.of(context).colorScheme.inversePrimary)),

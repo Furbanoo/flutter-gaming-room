@@ -7,7 +7,7 @@ ThemeData lightMode = ThemeData(
     primary: Colors.grey.shade200,
     secondary: Colors.grey.shade400,
     onPrimary: const Color(0XFF9f5afd),
-    onSecondary: Color(0XFF625894),
+    onSecondary: const Color(0XFF625894),
   ),
 );
 

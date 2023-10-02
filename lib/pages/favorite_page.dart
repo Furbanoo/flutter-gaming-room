@@ -28,7 +28,7 @@ class _FavoritePageState extends State<FavoritePage> {
                 const Spacer(),
                 Text(
                   'Meus Jogos Favoritos'.toUpperCase(),
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 15.0,
                     fontWeight: FontWeight.bold,
                   ),

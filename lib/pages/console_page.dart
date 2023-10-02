@@ -32,7 +32,7 @@ class _ConsolePageState extends State<ConsolePage> {
                   const Spacer(),
                   Text(
                     'Jogos por plataforma'.toUpperCase(),
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold,
                     ),
@@ -44,9 +44,9 @@ class _ConsolePageState extends State<ConsolePage> {
             ),
           ),
           SliverPadding(
-            padding: EdgeInsets.only(left: 10, right: 10, top: 20),
+            padding: const EdgeInsets.only(left: 10, right: 10, top: 20),
             sliver: SliverGrid(
-              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 160,
                 childAspectRatio: 3 / 2,
                 crossAxisSpacing: 20,
@@ -56,7 +56,7 @@ class _ConsolePageState extends State<ConsolePage> {
                 (BuildContext context, int index) {
                   return ChangeNotifierProvider.value(
                     value: loadedConsoles[index],
-                    child: ConsoleItem(),
+                    child: const ConsoleItem(),
                   );
                 },
                 childCount: loadedConsoles.length,

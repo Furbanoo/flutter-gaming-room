@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Text(
                     titles[0].toUpperCase(),
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 15.0,
                       fontWeight: FontWeight.bold,
                     ),
@@ -50,9 +50,8 @@ class _HomePageState extends State<HomePage> {
                         ),
                       );
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       child: Text(
                         "Ver Todos",
                       ),
@@ -61,14 +60,14 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            HorizontalGrid(),
+            const HorizontalGrid(),
             Padding(
               padding: const EdgeInsets.only(left: 10.0, top: 10.0),
               child: Row(
                 children: [
                   Text(
                     titles[1].toUpperCase(),
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 15.0,
                       fontWeight: FontWeight.bold,
                     ),
@@ -85,9 +84,8 @@ class _HomePageState extends State<HomePage> {
                         ),
                       );
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       child: Text(
                         "Ver Todos",
                       ),
@@ -96,7 +94,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            HorizontalGrid(),
+            const HorizontalGrid(),
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: InkWell(
@@ -130,13 +128,13 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Text(
                             titles[2],
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 16.0,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),
                           ),
-                          Text(
+                          const Text(
                             'Ver todos',
                             style: TextStyle(
                               color: Colors.white,
@@ -182,13 +180,13 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Text(
                             titles[3],
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 16.0,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),
                           ),
-                          Text(
+                          const Text(
                             'Ver todos',
                             style: TextStyle(
                               color: Colors.white,

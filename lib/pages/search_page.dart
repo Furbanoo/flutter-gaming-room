@@ -52,7 +52,7 @@ class _SearchPageState extends State<SearchPage> {
                 itemCount: loadedGames.length,
                 itemBuilder: (ctx, index) => ChangeNotifierProvider.value(
                       value: loadedGames[index],
-                      child: SearchGame(),
+                      child: const SearchGame(),
                     )),
           ),
         ],

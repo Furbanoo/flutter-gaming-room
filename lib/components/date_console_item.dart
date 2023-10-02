@@ -20,11 +20,11 @@ class _DateConsoleItemState extends State<DateConsoleItem> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Padding(
-          padding: EdgeInsets.only(top: 10.0, right: 10.0),
+          padding: const EdgeInsets.only(top: 10.0, right: 10.0),
           child: Container(
-            padding: EdgeInsets.all(5.0),
+            padding: const EdgeInsets.all(5.0),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                borderRadius: const BorderRadius.all(Radius.circular(5.0)),
                 border: Border.all(
                     width: 1.0,
                     color: Theme.of(context).colorScheme.inversePrimary)),
@@ -42,7 +42,8 @@ class _DateConsoleItemState extends State<DateConsoleItem> {
         ),
         Text(
           widget.date,
-          style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+          style:
+              const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
         ),
       ],
     );
