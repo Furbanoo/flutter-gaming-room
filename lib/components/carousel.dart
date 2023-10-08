@@ -1,5 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:gameroom/components/divider_timer.dart';
+import 'package:gameroom/components/timer_item.dart';
 
 class Carousel extends StatefulWidget {
   const Carousel({super.key});
@@ -9,13 +12,6 @@ class Carousel extends StatefulWidget {
 }
 
 final List<String> gameBackground = [
-  'https://static.square-enix-games.com/ffviir-backdrops/ffviir-zoom-midgar-city.jpg',
-  'https://i.pinimg.com/originals/e0/31/41/e031414756b314058c04bd660201a61e.jpg',
-  'https://4kwallpapers.com/images/wallpapers/marvels-spider-man-2880x1800-11990.jpeg',
-  'https://images6.alphacoders.com/131/1313389.png',
-];
-
-final List<String> gameCover = [
   'https://upload.wikimedia.org/wikipedia/pt/0/09/Final_Fantasy_VII_Remake_capa.png',
   'https://image.api.playstation.com/vulcan/img/rnd/202010/2217/LsaRVLF2IU2L1FNtu9d3MKLq.jpg',
   'https://cdn1.epicgames.com/offer/4bc43145bb8245a5b5cc9ea262ffbe0e/EGS_MarvelsSpiderManRemastered_InsomniacGamesNixxesSoftware_S2_1200x1600-76424286902489f4d9639ac9b735c2b2',
@@ -37,9 +33,9 @@ class _CarouselState extends State<Carousel> {
   Widget build(BuildContext context) {
     return CarouselSlider(
       options: CarouselOptions(
-        autoPlay: true,
-        autoPlayInterval: const Duration(seconds: 5),
-        autoPlayAnimationDuration: const Duration(milliseconds: 1800),
+        autoPlay: false,
+        autoPlayInterval: const Duration(seconds: 8),
+        autoPlayAnimationDuration: const Duration(milliseconds: 2500),
         height: MediaQuery.of(context).size.height / 3,
         enlargeCenterPage: true,
         viewportFraction: 1,
@@ -54,8 +50,10 @@ class _CarouselState extends State<Carousel> {
                 width: MediaQuery.of(context).size.width,
                 child: Stack(
                   children: [
-                    Image.network(
-                      item,
+                    CachedNetworkImage(
+                      imageUrl: item,
+                      placeholder: (context, url) =>
+                          const CircularProgressIndicator(),
                       fit: BoxFit.cover,
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height / 3,
@@ -63,13 +61,7 @@ class _CarouselState extends State<Carousel> {
                     Container(
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topRight,
-                          colors: [
-                            Colors.transparent,
-                            Colors.black.withOpacity(0.5)
-                          ],
-                        ),
+                        color: Colors.black.withOpacity(0.6),
                       ),
                     ),
                     Positioned(
@@ -95,32 +87,37 @@ class _CarouselState extends State<Carousel> {
                         }).toList(),
                       ),
                     ),
-                    Positioned(
-                      left: 10,
-                      bottom: 10,
-                      child: Row(
+                    Center(
+                      child: Column(
                         children: [
-                          SizedBox(
-                            height: 100,
-                            width: 100,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(6),
-                              child: Image.network(
-                                gameCover[_current],
-                                fit: BoxFit.cover,
-                              ),
+                          Spacer(),
+                          Text(
+                            gameTitle[_current],
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            '02 de novembro de 2023',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
                             ),
                           ),
-                          Container(
-                              margin: const EdgeInsets.only(left: 10),
-                              child: Text(
-                                gameTitle[_current],
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              TimerItem(title: 'DIAS'),
+                              DividerItem(),
+                              TimerItem(title: 'HORAS'),
+                              DividerItem(),
+                              TimerItem(
+                                title: 'MINUTOS',
+                              ),
+                            ],
+                          ),
+                          Spacer(),
                         ],
                       ),
                     ),

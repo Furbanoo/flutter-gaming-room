@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gameroom/components/grid_game.dart';
-import 'package:gameroom/models/games.dart';
-import 'package:gameroom/models/games_list.dart';
-import 'package:provider/provider.dart';
 
 class ViewAllPage extends StatefulWidget {
   final String title;
@@ -15,9 +12,6 @@ class ViewAllPage extends StatefulWidget {
 class _ViewAllPageState extends State<ViewAllPage> {
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<GamesList>(context);
-    final List<Games> loadedGames = provider.games;
-
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Column(
@@ -51,31 +45,57 @@ class _ViewAllPageState extends State<ViewAllPage> {
                 Padding(
                   padding: const EdgeInsets.only(right: 10),
                   child: IconButton(
-                    icon: const Icon(Icons.filter_alt),
-                    onPressed: () {},
+                    icon: Icon(Icons.filter_alt,
+                        color: Theme.of(context).colorScheme.inversePrimary),
+                    onPressed: () {
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Container(
+                              constraints: BoxConstraints(
+                                maxHeight:
+                                    MediaQuery.of(context).size.height * 0.8,
+                              ),
+                              child: Column(
+                                children: <Widget>[
+                                  const Padding(
+                                    padding: EdgeInsets.only(
+                                        top: 20.0, bottom: 10.0),
+                                    child: Text(
+                                      'Filtros',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.0),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          });
+                    },
                   ),
                 ),
               ],
             ),
           ),
-          Expanded(
-            child: Stack(
-              children: [
-                GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 8.0,
-                    mainAxisSpacing: 8.0,
-                  ),
-                  itemCount: loadedGames.length,
-                  itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
-                    value: loadedGames[i],
-                    child: const GridGame(),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // Expanded(
+          //   child: Stack(
+          //     children: [
+          //       GridView.builder(
+          //         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          //           crossAxisCount: 3,
+          //           crossAxisSpacing: 8.0,
+          //           mainAxisSpacing: 8.0,
+          //         ),
+          //         itemCount: loadedGames.length,
+          //         itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
+          //           value: loadedGames[i],
+          //           child: const GridGame(),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
         ],
       ),
     );

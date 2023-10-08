@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gameroom/components/search_game.dart';
-import 'package:gameroom/models/games.dart';
-import 'package:gameroom/models/games_list.dart';
 import 'package:provider/provider.dart';
 
 class SearchPage extends StatefulWidget {
@@ -14,8 +12,6 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<GamesList>(context);
-    final List<Games> loadedGames = provider.games;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: Column(
@@ -47,14 +43,14 @@ class _SearchPageState extends State<SearchPage> {
               });
             }),
           ),
-          Expanded(
-            child: ListView.builder(
-                itemCount: loadedGames.length,
-                itemBuilder: (ctx, index) => ChangeNotifierProvider.value(
-                      value: loadedGames[index],
-                      child: const SearchGame(),
-                    )),
-          ),
+          // Expanded(
+          //   child: ListView.builder(
+          //       itemCount: loadedGames.length,
+          //       itemBuilder: (ctx, index) => ChangeNotifierProvider.value(
+          //             value: loadedGames[index],
+          //             child: const SearchGame(),
+          //           )),
+          // ),
         ],
       ),
     );

@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            const HorizontalGrid(),
+            const HorizontalGrid(page: 0),
             Padding(
               padding: const EdgeInsets.only(left: 10.0, top: 10.0),
               child: Row(
@@ -94,7 +94,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            const HorizontalGrid(),
+            const HorizontalGrid(page: 1),
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: InkWell(

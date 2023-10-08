@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gameroom/models/consoles.dart';
 import 'package:gameroom/models/consoles_list.dart';
-import 'package:gameroom/models/games.dart';
-import 'package:gameroom/models/games_list.dart';
 import 'package:gameroom/pages/tabs_page.dart';
 import 'package:gameroom/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
@@ -28,21 +26,6 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (_) => Games(
-            cover: '',
-            title: '',
-            description: '',
-            video: '',
-            genres: [''],
-            platform: [''],
-            publisher: '',
-            releaseDate: [''],
-          ),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => GamesList(),
-        ),
         ChangeNotifierProvider(
           create: (_) => ConsolesList(),
         ),

@@ -1,26 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:gameroom/components/game_container_item.dart';
-import 'package:gameroom/models/games.dart';
-import 'package:gameroom/models/games_list.dart';
-import 'package:provider/provider.dart';
+import 'package:gameroom/services/igdb_api.dart';
 
-class HorizontalGrid extends StatelessWidget {
-  const HorizontalGrid({super.key});
+import '../models/game.dart';
+
+class HorizontalGrid extends StatefulWidget {
+  final int page;
+  const HorizontalGrid({
+    super.key,
+    required this.page,
+  });
+
+  @override
+  State<HorizontalGrid> createState() => _HorizontalGridState();
+}
+
+class _HorizontalGridState extends State<HorizontalGrid> {
+  List<Game> games = [];
+
+  @override
+  initState() {
+    super.initState();
+    getData();
+  }
+
+  getData() async {
+    List<int> id = (await releaseOrComingGames(widget
+        .page)); // 0 para últimos lançamentos e 1 para lançamentos futuros
+    games = (await fetchGamesByIds(id));
+    if (mounted) {
+      setState(() {});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<GamesList>(context);
-    final List<Games> loadedGames = provider.games;
     return SizedBox.fromSize(
       size: const Size.fromHeight(200),
       child: ListView.builder(
-        itemCount: loadedGames.length,
+        itemCount: games.length,
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.only(left: 10, top: 5),
-        itemBuilder: (BuildContext ctx, int i) => ChangeNotifierProvider.value(
-          value: loadedGames[i],
-          child: const GameContainerItem(),
-        ),
+        itemBuilder: (BuildContext ctx, int i) {
+          return GameContainerItem(game: games[i]);
+        },
       ),
     );
   }
