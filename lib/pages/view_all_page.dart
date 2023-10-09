@@ -56,9 +56,9 @@ class _ViewAllPageState extends State<ViewAllPage> {
                                 maxHeight:
                                     MediaQuery.of(context).size.height * 0.8,
                               ),
-                              child: Column(
+                              child: const Column(
                                 children: <Widget>[
-                                  const Padding(
+                                  Padding(
                                     padding: EdgeInsets.only(
                                         top: 20.0, bottom: 10.0),
                                     child: Text(

@@ -46,24 +46,23 @@ class _SearchGameState extends State<SearchGame> {
             Container(
               margin: const EdgeInsets.only(left: 10.0),
               width: 200,
-              child: Column(
+              child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Text(
                     'teste', //games.title,
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(height: 5.0),
+                  SizedBox(height: 5.0),
                   Text(
                     'Data de Lançamento: ',
-                    style: const TextStyle(fontSize: 12),
+                    style: TextStyle(fontSize: 12),
                   ),
-                  const SizedBox(height: 5.0),
+                  SizedBox(height: 5.0),
                   AutoSizeText(
                     'Desenvolvedor: ',
-                    style: const TextStyle(fontSize: 12),
+                    style: TextStyle(fontSize: 12),
                     maxLines: 3,
                   ),
                 ],

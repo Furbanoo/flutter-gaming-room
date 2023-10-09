@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:gameroom/models/consoles.dart';
 import 'package:gameroom/models/consoles_list.dart';
 import 'package:gameroom/pages/tabs_page.dart';
@@ -34,6 +35,12 @@ class _MyAppState extends State<MyApp> {
         ),
       ],
       child: MaterialApp(
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [Locale('pt', 'BR')],
         debugShowCheckedModeBanner: false,
         home: const TabsPage(),
         theme: Provider.of<ThemeProvider>(context).themeData,

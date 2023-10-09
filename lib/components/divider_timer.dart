@@ -10,13 +10,11 @@ class DividerItem extends StatefulWidget {
 class _DividerItemState extends State<DividerItem> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text(
-        '|',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 68,
-        ),
+    return const Text(
+      '|',
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 48,
       ),
     );
   }

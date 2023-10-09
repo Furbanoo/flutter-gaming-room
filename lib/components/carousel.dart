@@ -1,8 +1,15 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gameroom/components/divider_timer.dart';
 import 'package:gameroom/components/timer_item.dart';
+import 'package:gameroom/services/igdb_api.dart';
+import 'package:intl/intl.dart';
+
+import '../models/game.dart';
 
 class Carousel extends StatefulWidget {
   const Carousel({super.key});
@@ -11,29 +18,81 @@ class Carousel extends StatefulWidget {
   State<Carousel> createState() => _CarouselState();
 }
 
-final List<String> gameBackground = [
-  'https://upload.wikimedia.org/wikipedia/pt/0/09/Final_Fantasy_VII_Remake_capa.png',
-  'https://image.api.playstation.com/vulcan/img/rnd/202010/2217/LsaRVLF2IU2L1FNtu9d3MKLq.jpg',
-  'https://cdn1.epicgames.com/offer/4bc43145bb8245a5b5cc9ea262ffbe0e/EGS_MarvelsSpiderManRemastered_InsomniacGamesNixxesSoftware_S2_1200x1600-76424286902489f4d9639ac9b735c2b2',
-  'https://image.api.playstation.com/vulcan/img/rnd/202010/2618/itbSm3suGHSSHIpmu9CCPBRy.jpg',
-];
-
-final List<String> gameTitle = [
-  'Final Fantasy VII Remake',
-  'God of War',
-  'Marvel Spider-Man',
-  'The Last of Us 2',
-];
-
 class _CarouselState extends State<Carousel> {
+  List<int> idGame = [];
+  List<int> dateGame = [];
+  List<Game> games = [];
+  late List<Duration> timeDifference = [];
+  late Timer timer;
+  DateTime _currentGameDate = DateTime.now().toUtc();
   int _current = 0;
   final CarouselController _controller = CarouselController();
+
+  _CarouselState() {
+    timeDifference = List<Duration>.empty();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchReleaseGames();
+  }
+
+  Future<void> fetchReleaseGames() async {
+    try {
+      final result = await dateRelease();
+      setState(() {
+        dateGame = result.dateGame;
+        idGame = result.idGame;
+        timeDifference = List<Duration>.generate(
+            dateGame.length, (index) => const Duration());
+      });
+      games = (await fetchGamesByIds(idGame));
+      startTimer();
+    } catch (e) {
+      if (kDebugMode) {
+        print('Erro ao buscar os jogos: $e');
+      }
+    }
+  }
+
+  void startTimer() {
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      final now = DateTime.now().toUtc();
+
+      if (dateGame.isNotEmpty) {
+        for (int i = 0; i < dateGame.length; i++) {
+          final timestampDateTime = DateTime.fromMillisecondsSinceEpoch(
+            dateGame[i] * 1000,
+            isUtc: true,
+          );
+
+          Duration difference = timestampDateTime.isAfter(now)
+              ? timestampDateTime.difference(now)
+              : const Duration();
+
+          if (_current == i) {
+            _currentGameDate = timestampDateTime;
+          }
+          timeDifference[i] = difference;
+        }
+      }
+
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return CarouselSlider(
       options: CarouselOptions(
-        autoPlay: false,
+        autoPlay: true,
         autoPlayInterval: const Duration(seconds: 8),
         autoPlayAnimationDuration: const Duration(milliseconds: 2500),
         height: MediaQuery.of(context).size.height / 3,
@@ -45,13 +104,13 @@ class _CarouselState extends State<Carousel> {
           });
         },
       ),
-      items: gameBackground
+      items: games
           .map((item) => SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: Stack(
                   children: [
                     CachedNetworkImage(
-                      imageUrl: item,
+                      imageUrl: item.coverUrl!,
                       placeholder: (context, url) =>
                           const CircularProgressIndicator(),
                       fit: BoxFit.cover,
@@ -70,7 +129,7 @@ class _CarouselState extends State<Carousel> {
                       bottom: 0,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: gameBackground.asMap().entries.map((entry) {
+                        children: games.asMap().entries.map((entry) {
                           return GestureDetector(
                             onTap: () => _controller.animateToPage(entry.key),
                             child: Container(
@@ -90,16 +149,17 @@ class _CarouselState extends State<Carousel> {
                     Center(
                       child: Column(
                         children: [
-                          Spacer(),
+                          const Spacer(),
                           Text(
-                            gameTitle[_current],
+                            games[_current].name,
                             style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            '02 de novembro de 2023',
+                            DateFormat("d 'de' MMMM 'de' y", "pt_BR")
+                                .format(_currentGameDate),
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 14,
@@ -108,16 +168,23 @@ class _CarouselState extends State<Carousel> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              TimerItem(title: 'DIAS'),
-                              DividerItem(),
-                              TimerItem(title: 'HORAS'),
-                              DividerItem(),
+                              TimerItem(
+                                title: 'DIAS',
+                                date: timeDifference[_current].inDays,
+                              ),
+                              const DividerItem(),
+                              TimerItem(
+                                title: 'HORAS',
+                                date: timeDifference[_current].inHours % 24,
+                              ),
+                              const DividerItem(),
                               TimerItem(
                                 title: 'MINUTOS',
+                                date: timeDifference[_current].inMinutes % 60,
                               ),
                             ],
                           ),
-                          Spacer(),
+                          const Spacer(),
                         ],
                       ),
                     ),

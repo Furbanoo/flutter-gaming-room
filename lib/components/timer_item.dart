@@ -1,11 +1,14 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class TimerItem extends StatefulWidget {
   final String title;
-  const TimerItem({
+  int date;
+  TimerItem({
     super.key,
     required this.title,
+    required this.date,
   });
 
   @override
@@ -16,30 +19,28 @@ class _TimerItemState extends State<TimerItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(
+      color: const Color.fromRGBO(255, 255, 255, 0.5),
+      width: 80,
+      height: 80,
+      margin: const EdgeInsets.only(
         top: 10,
-      ),
-      width: 85,
-      height: 100,
-      decoration: BoxDecoration(
-        color: Colors.white,
       ),
       child: Center(
         child: Column(
           children: [
             Text(
-              '00',
-              style: TextStyle(
+              widget.date.toString(),
+              style: const TextStyle(
                 color: Colors.black,
-                fontSize: 56,
+                fontSize: 46,
                 fontWeight: FontWeight.bold,
               ),
             ),
             AutoSizeText(
               widget.title,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.black,
-                fontSize: 18,
+                fontSize: 14,
                 fontWeight: FontWeight.bold,
               ),
             ),

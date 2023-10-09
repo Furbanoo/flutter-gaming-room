@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gameroom/pages/game_page.dart';
 import 'package:gameroom/services/igdb_api.dart';
@@ -46,9 +47,10 @@ class _GameContainerItemState extends State<GameContainerItem> {
               clipBehavior: Clip.hardEdge,
               elevation: 5,
               shadowColor: const Color(0xCC000000),
-              child: Image.network(
-                widget.game.coverUrl!,
-                //placeholder: "assets/placeholder_box.png",
+              child: CachedNetworkImage(
+                imageUrl: widget.game.coverUrl!,
+                placeholder: (context, url) =>
+                    const CircularProgressIndicator(),
                 width: 120,
                 height: 120 * 1.50,
                 fit: BoxFit.cover,

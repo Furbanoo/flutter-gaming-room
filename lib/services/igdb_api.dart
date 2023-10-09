@@ -38,15 +38,49 @@ Future<List<Game>> search(String query) async {
   );
 }
 
-Future<List<int>> releaseOrComingGames(int query) async {
+Future<ReleaseDateResult> dateRelease() async {
+  DateTime now = DateTime.now();
+  int unixTimestamp = now.toUtc().millisecondsSinceEpoch ~/ 1000;
+  Response response = await fetch('release_dates',
+      'fields date, game.id, game.hypes ; where date > $unixTimestamp & human != "TBD" & status != (2,3) & game.hypes > 10; limit 7;');
+
+  if (response.statusCode == 200) {
+    final List<dynamic> jsonData = json.decode(response.body);
+    final Set<int> uniqueGameIds = {};
+    final Set<int> dateGame = {};
+
+    for (var item in jsonData) {
+      final gameData = item['game'];
+
+      final gameId = gameData['id'];
+      if (gameId is int) {
+        uniqueGameIds.add(gameId);
+      }
+    }
+
+    for (var item in jsonData) {
+      final dates = item['date'];
+      if (dates is int) {
+        dateGame.add(dates);
+      }
+    }
+
+    return ReleaseDateResult(uniqueGameIds.toList(), dateGame.toList());
+  } else {
+    throw Exception('Falha ao buscar games do carousel');
+  }
+}
+
+Future<List<int>> releaseOrComingGames(int page) async {
   String date;
-  if (query == 0) {
+  if (page == 0) {
     date = "<";
   } else {
     date = ">";
   }
   DateTime now = DateTime.now();
   int unixTimestamp = now.toUtc().millisecondsSinceEpoch ~/ 1000;
+
   Response response = await fetch('release_dates',
       'fields game.id; where human != "TBD" & date $date $unixTimestamp & status != (2,3); sort date desc; limit 50;');
 
@@ -105,4 +139,11 @@ Future<void> getAccessToken() async {
         'https://id.twitch.tv/oauth2/token?client_id=$clientId&client_secret=$clientSecret&grant_type=client_credentials'),
   );
   debugPrint("Atualizar Acess Token ");
+}
+
+class ReleaseDateResult {
+  final List<int> idGame;
+  final List<int> dateGame;
+
+  ReleaseDateResult(this.idGame, this.dateGame);
 }
