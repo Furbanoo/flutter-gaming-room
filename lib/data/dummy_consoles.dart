@@ -128,11 +128,6 @@ final dummyConsoles = [
   ),
   Consoles(
     background:
-        'https://upload.wikimedia.org/wikipedia/commons/f/f1/Xbox_Series_S.png',
-    title: 'Xbox Series S',
-  ),
-  Consoles(
-    background:
         'https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Xbox_Series_X_Logo.svg/2115px-Xbox_Series_X_Logo.svg.png',
     title: 'Xbox Series X',
   ),

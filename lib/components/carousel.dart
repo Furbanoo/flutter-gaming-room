@@ -34,21 +34,21 @@ class _CarouselState extends State<Carousel> {
 
   @override
   void initState() {
-    super.initState();
     fetchReleaseGames();
+    startTimer();
+    super.initState();
   }
 
   Future<void> fetchReleaseGames() async {
     try {
-      final result = await dateRelease();
+      final result = await gameReleaseCarousel();
       setState(() {
         dateGame = result.dateGame;
         idGame = result.idGame;
         timeDifference = List<Duration>.generate(
             dateGame.length, (index) => const Duration());
       });
-      games = (await fetchGamesByIds(idGame));
-      startTimer();
+      games = (await fetchGamesByIdsCarousel(idGame));
     } catch (e) {
       if (kDebugMode) {
         print('Erro ao buscar os jogos: $e');

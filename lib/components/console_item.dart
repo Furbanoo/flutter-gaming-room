@@ -16,12 +16,12 @@ class _ConsoleItemState extends State<ConsoleItem> {
     final consoles = Provider.of<Consoles>(context);
     return InkWell(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ViewAllPage(title: consoles.title),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => ViewAllPage(title: consoles.title),
+        //   ),
+        // );
       },
       borderRadius: BorderRadius.circular(16.0),
       splashColor: Theme.of(context).colorScheme.primary,

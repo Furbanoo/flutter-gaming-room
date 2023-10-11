@@ -38,11 +38,11 @@ Future<List<Game>> search(String query) async {
   );
 }
 
-Future<ReleaseDateResult> dateRelease() async {
+Future<ReleaseDateResult> gameReleaseCarousel() async {
   DateTime now = DateTime.now();
   int unixTimestamp = now.toUtc().millisecondsSinceEpoch ~/ 1000;
   Response response = await fetch('release_dates',
-      'fields date, game.id, game.hypes ; where date > $unixTimestamp & human != "TBD" & status != (2,3) & game.hypes > 10; limit 7;');
+      'fields date, game.id, game.hypes ; where date > $unixTimestamp & human != "TBD" & status != (2,3) & game.hypes > 10; sort game.name asc; limit 7;');
 
   if (response.statusCode == 200) {
     final List<dynamic> jsonData = json.decode(response.body);
@@ -53,14 +53,9 @@ Future<ReleaseDateResult> dateRelease() async {
       final gameData = item['game'];
 
       final gameId = gameData['id'];
+      final dates = item['date'];
       if (gameId is int) {
         uniqueGameIds.add(gameId);
-      }
-    }
-
-    for (var item in jsonData) {
-      final dates = item['date'];
-      if (dates is int) {
         dateGame.add(dates);
       }
     }
@@ -71,18 +66,34 @@ Future<ReleaseDateResult> dateRelease() async {
   }
 }
 
-Future<List<int>> releaseOrComingGames(int page) async {
-  String date;
-  if (page == 0) {
-    date = "<";
-  } else {
-    date = ">";
-  }
+// 0 Últimos Lançamentos
+// 1 Lançamentos Futuros
+// 2 Jogos Melhores Avaliados
+// 3 Jogos Mais Aguardados
+Future<List<int>> getIdsGames(int page) async {
+  String endpoint = '';
+  String query = '';
   DateTime now = DateTime.now();
   int unixTimestamp = now.toUtc().millisecondsSinceEpoch ~/ 1000;
+  if (page == 0) {
+    endpoint = 'release_dates';
+    query =
+        'fields game.id; where human != "TBD" & date < $unixTimestamp & status != (2,3); sort date desc; limit 50;';
+  } else if (page == 1) {
+    endpoint = 'release_dates';
+    query =
+        'fields game.id; where human != "TBD" & date > $unixTimestamp & status != (2,3); sort date desc; limit 50;';
+  } else if (page == 2) {
+    endpoint = 'release_dates';
+    query =
+        'fields id, game.aggregated_rating, game.aggregated_rating_count, game.total_rating, game.total_rating_count; where game.aggregated_rating > 85 & game.total_rating_count > 50; limit 50;';
+  } else if (page == 3) {
+    endpoint = 'release_dates';
+    query =
+        'fields date, game.id, game.name, human; where date > 1696813077 & game.hypes > 10; limit 50;';
+  }
 
-  Response response = await fetch('release_dates',
-      'fields game.id; where human != "TBD" & date $date $unixTimestamp & status != (2,3); sort date desc; limit 50;');
+  Response response = await fetch(endpoint, query);
 
   if (response.statusCode == 200) {
     final List<dynamic> jsonData = json.decode(response.body);
@@ -99,14 +110,14 @@ Future<List<int>> releaseOrComingGames(int page) async {
 
     return uniqueGameIds.toList();
   } else {
-    throw Exception('Falha ao buscar últimos lançamentos');
+    throw Exception('Falha ao buscar jogos');
   }
 }
 
 Future<List<Game>> fetchGamesByIds(List<int> gameIds) async {
   final idString = gameIds.join(",");
   final response = await fetch("games",
-      'fields name, cover.image_id, summary, total_rating, first_release_date; where id = ($idString); limit ${idString.length};');
+      'fields name, cover.image_id, summary, total_rating, first_release_date; where id = ($idString); limit ${gameIds.length};');
 
   return List<Game>.from(
     jsonDecode(response.body).map(
@@ -115,20 +126,32 @@ Future<List<Game>> fetchGamesByIds(List<int> gameIds) async {
   );
 }
 
-Future<List<Game>> fetchGames() async {
-  Response response = await fetch("games",
-      'fields name, cover.image_id; sort total_rating desc; limit 10;');
+Future<List<Game>> fetchGamesByIdsCarousel(List<int> gameIds) async {
+  final idString = gameIds.join(",");
+  final response = await fetch("games",
+      'fields name, cover.image_id, summary, total_rating, first_release_date; where id = ($idString);');
 
-  return List<Game>.from(
-    jsonDecode(response.body).map(
-      (game) => Game.fromMap(game),
-    ),
-  );
+  final List<dynamic> jsonData = jsonDecode(response.body);
+
+  final Map<int, dynamic> gamesMap = {};
+
+  for (var gameData in jsonData) {
+    final gameId = gameData['id'];
+    gamesMap[gameId] = gameData;
+  }
+
+  // Criar a lista de jogos ordenada com base nos IDs originais
+  final List<Game> orderedGames = gameIds.map((id) {
+    final gameData = gamesMap[id];
+    return Game.fromMap(gameData);
+  }).toList();
+
+  return orderedGames;
 }
 
 Future<GameDetails> gameDetails(int id) async {
   Response response = await fetch("games",
-      'fields artworks.image_id, genres.name, involved_companies.company.name, involved_companies.company.logo.image_id, platforms.name, platforms.platform_logo.image_id, screenshots.image_id, similar_games.name, similar_games.cover.image_id, cover.image_id, first_release_date, name, summary, total_rating, total_rating_count, status, storyline, themes.name, url, websites.url, websites.category, game_modes.name, videos.video_id, videos.name; where id = $id;');
+      'fields artworks.image_id, cover.image_id, dlcs.id, first_release_date, franchise.games.cover.image_id, franchise.games.name, game_modes.name, genres.name, language_supports.language.name, language_supports.language_support_type.name, involved_companies.company.logo.image_id, involved_companies.company.name, name, platforms.name, platforms.platform_logo.image_id, release_dates.date, screenshots.image_id, similar_games.cover.image_id, similar_games.name, status, storyline, summary, themes.name, total_rating, total_rating_count, url, videos.name, videos.video_id, websites.category, websites.url; where id = $id;');
 
   return GameDetails.fromMap(jsonDecode(response.body)[0]);
 }

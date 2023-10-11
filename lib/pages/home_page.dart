@@ -17,6 +17,7 @@ class _HomePageState extends State<HomePage> {
     'Os mais bem avaliados',
     'Mais esperados',
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +47,10 @@ class _HomePageState extends State<HomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ViewAllPage(title: titles[0]),
+                          builder: (context) => ViewAllPage(
+                            title: titles[0],
+                            page: 0,
+                          ),
                         ),
                       );
                     },
@@ -80,6 +84,7 @@ class _HomePageState extends State<HomePage> {
                         MaterialPageRoute(
                           builder: (context) => ViewAllPage(
                             title: titles[1],
+                            page: 1,
                           ),
                         ),
                       );
@@ -98,7 +103,17 @@ class _HomePageState extends State<HomePage> {
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ViewAllPage(
+                        title: titles[2],
+                        page: 2,
+                      ),
+                    ),
+                  );
+                },
                 borderRadius: BorderRadius.circular(16.0),
                 splashColor: Theme.of(context).colorScheme.primary,
                 child: Container(
@@ -150,7 +165,17 @@ class _HomePageState extends State<HomePage> {
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ViewAllPage(
+                        title: titles[3],
+                        page: 3,
+                      ),
+                    ),
+                  );
+                },
                 borderRadius: BorderRadius.circular(16.0),
                 splashColor: Theme.of(context).colorScheme.onSecondary,
                 child: Container(

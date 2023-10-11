@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gameroom/pages/game_page.dart';
-import 'package:gameroom/services/igdb_api.dart';
 
 import '../models/game.dart';
 
@@ -23,21 +22,14 @@ class _GameContainerItemState extends State<GameContainerItem> {
       padding: const EdgeInsets.only(right: 10),
       child: InkWell(
         onTap: () {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => GamePage(
-          //       cover: games.cover,
-          //       description: games.description,
-          //       genres: games.genres,
-          //       platform: games.platform,
-          //       publisher: games.publisher,
-          //       releaseDate: games.releaseDate,
-          //       title: games.title,
-          //       video: games.video,
-          //     ),
-          //   ),
-          // );
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => GamePage(
+                id: widget.game.id,
+              ),
+            ),
+          );
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

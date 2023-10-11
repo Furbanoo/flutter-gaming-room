@@ -113,7 +113,7 @@ class GameDetails extends Game {
       cover: map['cover']?['image_id'] ?? 'nocover',
       coverUrl:
           "https://images.igdb.com/igdb/image/upload/t_cover_big/${map['cover']?['image_id'] ?? 'nocover'}.png",
-      firstReleaseDate: map['firt_release_date'] ?? -1,
+      firstReleaseDate: map['first_release_date'] ?? -1,
       totalRating: map['total_rating'] ?? 0.0,
       artworks:
           map['artworks']?.map((artwork) => artwork['image_id']).toList() ?? [],
@@ -129,13 +129,13 @@ class GameDetails extends Game {
       gameModes: map['game_modes']?.map((mode) => mode['name']).toList() ?? [],
       genres: map['genres']?.map((genre) => genre['name']).toList() ?? [],
       languageSupports: map['language_supports']
-              ?.map((language) => Language(
-                  language['name'], language['language_support_type']?['name']))
+              ?.map((language) => Language(language['language']?['name'],
+                  language['language_support_type']?['name']))
               .toList() ??
           [],
       platforms: map['platforms']
               ?.map((platform) => Platform(
-                  platform['name'], platform['platform_logo']['image_id']))
+                  platform['name'], platform['platform_logo']?['image_id']))
               .toList() ??
           [],
       releaseDate:

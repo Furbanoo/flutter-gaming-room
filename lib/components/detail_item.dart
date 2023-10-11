@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class DetailItem extends StatelessWidget {
@@ -51,10 +52,13 @@ class DetailItem extends StatelessWidget {
                     ),
                   ),
                   name != null
-                      ? Text(
+                      ? AutoSizeText(
                           name!,
                           style: const TextStyle(
-                              color: Colors.white, fontSize: 10.0),
+                            color: Colors.white,
+                          ),
+                          maxLines: 1,
+                          presetFontSizes: [10, 6],
                         )
                       : Container(),
                 ],

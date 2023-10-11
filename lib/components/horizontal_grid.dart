@@ -25,8 +25,7 @@ class _HorizontalGridState extends State<HorizontalGrid> {
   }
 
   getData() async {
-    List<int> id = (await releaseOrComingGames(widget
-        .page)); // 0 para últimos lançamentos e 1 para lançamentos futuros
+    List<int> id = (await getIdsGames(widget.page));
     games = (await fetchGamesByIds(id));
     if (mounted) {
       setState(() {});
