@@ -29,7 +29,7 @@ Future<Response> fetch(String endpoint, String query) async {
 
 Future<List<Game>> search(String query) async {
   Response response = await fetch("games",
-      'fields name, cover.image_id, summary, total_rating, first_release_date; search "$query"; where category = 0;');
+      'fields name, cover.image_id, summary, total_rating, first_release_date; search "$query"; limit 20;');
 
   return List<Game>.from(
     jsonDecode(response.body).map(
@@ -78,11 +78,11 @@ Future<List<int>> getIdsGames(int page) async {
   if (page == 0) {
     endpoint = 'release_dates';
     query =
-        'fields game.id; where human != "TBD" & date < $unixTimestamp & status != (2,3); sort date desc; limit 50;';
+        'fields game.id; where human != "TBD" & date < $unixTimestamp & status != (1,3); sort date desc; limit 50;';
   } else if (page == 1) {
     endpoint = 'release_dates';
     query =
-        'fields game.id; where human != "TBD" & date > $unixTimestamp & status != (2,3); sort date desc; limit 50;';
+        'fields game.id; where human != "TBD" & date > $unixTimestamp & status != (1,3); sort date desc; limit 50;';
   } else if (page == 2) {
     endpoint = 'release_dates';
     query =
@@ -126,6 +126,19 @@ Future<List<Game>> fetchGamesByIds(List<int> gameIds) async {
   );
 }
 
+Future<List<Game>> fetchGamesByFranchise(List<int> gameIds) async {
+  final idString = gameIds.join(",");
+  final response = await fetch("franchises",
+      'fields games.name, games.cover.image_id, games.summary, games.total_rating, games.first_release_date; where id = ($idString); limit ${gameIds.length};');
+
+  print(response.body);
+  return List<Game>.from(
+    jsonDecode(response.body).map(
+      (game) => Game.fromMap(game),
+    ),
+  );
+}
+
 Future<List<Game>> fetchGamesByIdsCarousel(List<int> gameIds) async {
   final idString = gameIds.join(",");
   final response = await fetch("games",
@@ -151,7 +164,7 @@ Future<List<Game>> fetchGamesByIdsCarousel(List<int> gameIds) async {
 
 Future<GameDetails> gameDetails(int id) async {
   Response response = await fetch("games",
-      'fields artworks.image_id, cover.image_id, dlcs.id, first_release_date, franchise.games.cover.image_id, franchise.games.name, game_modes.name, genres.name, language_supports.language.name, language_supports.language_support_type.name, involved_companies.company.logo.image_id, involved_companies.company.name, name, platforms.name, platforms.platform_logo.image_id, release_dates.date, screenshots.image_id, similar_games.cover.image_id, similar_games.name, status, storyline, summary, themes.name, total_rating, total_rating_count, url, videos.name, videos.video_id, websites.category, websites.url; where id = $id;');
+      'fields artworks.image_id, cover.image_id, dlcs.cover.image_id, dlcs.name, first_release_date, franchises.id, game_modes.name, genres.name, language_supports.language.name, language_supports.language_support_type.name, involved_companies.company.logo.image_id, involved_companies.company.name, name, platforms.name, platforms.platform_logo.image_id, release_dates.date, screenshots.image_id, similar_games.cover.image_id, similar_games.name, status, storyline, summary, themes.name, total_rating, total_rating_count, url, videos.name, videos.video_id, websites.category, websites.url; where id = $id;');
 
   return GameDetails.fromMap(jsonDecode(response.body)[0]);
 }

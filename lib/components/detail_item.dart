@@ -52,13 +52,16 @@ class DetailItem extends StatelessWidget {
                     ),
                   ),
                   name != null
-                      ? AutoSizeText(
-                          name!,
-                          style: const TextStyle(
-                            color: Colors.white,
+                      ? Container(
+                          width: 100,
+                          child: AutoSizeText(
+                            name!,
+                            style: const TextStyle(
+                              color: Colors.white,
+                            ),
+                            maxLines: 1,
+                            presetFontSizes: [10, 6],
                           ),
-                          maxLines: 1,
-                          presetFontSizes: [10, 6],
                         )
                       : Container(),
                 ],

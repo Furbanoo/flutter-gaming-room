@@ -6,7 +6,7 @@ class GameDetails extends Game {
   List? artworks;
   List? companies;
   List? dlcs;
-  List? franchise;
+  List? franchises;
   List? gameModes;
   List? genres;
   List? languageSupports;
@@ -17,7 +17,7 @@ class GameDetails extends Game {
   List? similarGames;
   int? status;
   String? storyline;
-  String? summary;
+
   List? themes;
   int? totalRatingCount;
   String? url;
@@ -31,10 +31,11 @@ class GameDetails extends Game {
     super.coverUrl,
     super.firstReleaseDate,
     super.totalRating,
+    super.summary,
     this.artworks,
     this.companies,
     this.dlcs,
-    this.franchise,
+    this.franchises,
     this.gameModes,
     this.genres,
     this.languageSupports,
@@ -44,13 +45,14 @@ class GameDetails extends Game {
     this.similarGames,
     this.status,
     this.storyline,
-    this.summary,
     this.themes,
     this.totalRatingCount,
     this.url,
     this.videos,
     this.websites,
   });
+
+  get length => null;
 
   @override
   Map<String, dynamic> toMap() {
@@ -69,8 +71,8 @@ class GameDetails extends Game {
                 }
               })
           .toList(),
-      'dlcs': dlcs?.map((game) => game.toMap()).toList(),
-      'franchise': franchise?.map((game) => game.toMap()).toList(),
+      'dlcs': dlcs?.map((dlc) => dlc.toMap()).toList(),
+      'franchises': franchises?.map((franchise) => {"id": franchises}).toList(),
       'first_release_date': firstReleaseDate,
       'game_modes': gameModes?.map((mode) => {"name": mode}).toList(),
       'genres': genres?.map((genre) => {"name": genre}).toList(),
@@ -124,8 +126,8 @@ class GameDetails extends Game {
               .toList() ??
           [],
       dlcs: map['dlcs']?.map((game) => Game.fromMap(game)).toList() ?? [],
-      franchise:
-          map['franchise']?.map((game) => Game.fromMap(game)).toList() ?? [],
+      franchises:
+          map['franchises']?.map((franchise) => franchise['id']).toList() ?? [],
       gameModes: map['game_modes']?.map((mode) => mode['name']).toList() ?? [],
       genres: map['genres']?.map((genre) => genre['name']).toList() ?? [],
       languageSupports: map['language_supports']

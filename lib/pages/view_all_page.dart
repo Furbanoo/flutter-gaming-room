@@ -5,11 +5,15 @@ import 'package:gameroom/services/igdb_api.dart';
 
 class ViewAllPage extends StatefulWidget {
   final String title;
-  final int page;
+  final int? page;
+  final List<int>? id;
+  final int? type;
   const ViewAllPage({
     super.key,
     required this.title,
-    required this.page,
+    this.page,
+    this.id,
+    this.type,
   });
 
   @override
@@ -17,7 +21,7 @@ class ViewAllPage extends StatefulWidget {
 }
 
 class _ViewAllPageState extends State<ViewAllPage> {
-  List<Game> games = [];
+  List<dynamic> games = [];
   bool _isLoading = true;
   ScrollController _scrollController = ScrollController();
   int currentPage = 1;
@@ -31,14 +35,18 @@ class _ViewAllPageState extends State<ViewAllPage> {
         _loadMoreGames();
       }
     });
-    getData();
+    if (widget.id == null) {
+      getGames();
+    } else {
+      getOther();
+    }
   }
 
-  getData() async {
+  getGames() async {
     setState(() {
       _isLoading = true;
     });
-    List<int> id = (await getIdsGames(widget.page));
+    List<int> id = (await getIdsGames(widget.page!));
     games = (await fetchGamesByIds(id));
     if (mounted) {
       setState(() {
@@ -47,8 +55,24 @@ class _ViewAllPageState extends State<ViewAllPage> {
     }
   }
 
+  getOther() async {
+    setState(() {
+      _isLoading = true;
+    });
+    if (widget.type == 0) {
+      games = (await fetchGamesByFranchise(widget.id!));
+    } else if (widget.type == 1) {
+      games = (await fetchGamesByIds(widget.id!));
+    }
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
   void _loadMoreGames() async {
-    List<int> nextPageIds = await getIdsGames(widget.page);
+    List<int> nextPageIds = await getIdsGames(widget.page!);
     List<Game> nextPageGames = await fetchGamesByIds(nextPageIds);
 
     setState(() {

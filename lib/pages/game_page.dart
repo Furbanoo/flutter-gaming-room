@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -5,12 +6,15 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:gameroom/components/bagde.dart';
 import 'package:gameroom/components/date_console_item.dart';
 import 'package:gameroom/components/detail_item.dart';
+import 'package:gameroom/components/grid_game.dart';
+import 'package:gameroom/components/stars_bar.dart';
 import 'package:gameroom/components/video_player.dart';
+import 'package:gameroom/models/date_formatter.dart';
 import 'package:gameroom/models/game_details.dart';
 import 'package:gameroom/models/item.dart';
+import 'package:gameroom/models/rate_formatter.dart';
 import 'package:gameroom/pages/view_all_page.dart';
 import 'package:gameroom/services/igdb_api.dart';
-import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view.dart';
 
 class GamePage extends StatefulWidget {
@@ -31,6 +35,9 @@ class _GamePageState extends State<GamePage>
   bool _isFavorite = false;
   bool _isLoading = true;
   late GameDetails game;
+  String publisher = '';
+  List<int> dlcs = [];
+  List<int> franchise = [];
 
   final tabs = <Item>[
     Item(id: 0, name: 'DESCRIÇÃO'),
@@ -38,11 +45,25 @@ class _GamePageState extends State<GamePage>
     Item(id: 2, name: 'JOGOS SEMELHANTES')
   ];
 
+  final List<String> title = [
+    'Franquia',
+    'DLCs',
+    'Versões',
+    'Produtora',
+    'Distribuidora',
+    'Idiomas',
+  ];
+
   @override
   void initState() {
     super.initState();
     getData(widget.id);
     _tabController = TabController(length: 3, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   getData(gameId) async {
@@ -54,20 +75,30 @@ class _GamePageState extends State<GamePage>
       _isLoading = false;
     });
     if (mounted) {
-      setState(() {});
+      setState(() {
+        if (game.companies!.isNotEmpty) {
+          if (game.companies!.length > 1) {
+            publisher = game.companies![1].name;
+          } else {
+            publisher = game.companies![0].name;
+          }
+        }
+
+        if (game.dlcs!.isNotEmpty) {
+          for (int i = 0; i < game.dlcs!.length; i++) {
+            dlcs.add(game.dlcs![i].id);
+          }
+        }
+
+        if (game.franchises!.isNotEmpty) {
+          for (int i = 0; i < game.franchises!.length; i++) {
+            franchise.add(game.franchises![i]);
+          }
+        }
+        print(franchise);
+        print('ID: ${game.id}');
+      });
     }
-  }
-
-  double formattedRating(double rating) {
-    double stars = (rating / 100) * 5;
-    return stars;
-  }
-
-  String formattedDate(int unix) {
-    DateTime date = DateTime.fromMillisecondsSinceEpoch(unix * 1000);
-
-    String dateFormmated = DateFormat("dd/MM/yyyy").format(date);
-    return dateFormmated;
   }
 
   void _toggleFavorite() {
@@ -81,6 +112,23 @@ class _GamePageState extends State<GamePage>
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
+  void notAvailable(String info) {
+    String message = '';
+    if (info == title[0].toString()) {
+      message = '${game.name} não possui Franquia!';
+    } else if (info == title[1].toString()) {
+      message = '${game.name} não possui DLC!';
+    } else if (info == title[2]) {
+      message = '${game.name} não possui versões';
+    } else if (info == title[3]) {
+      message = 'A Produtora de ${game.name} não possui demais jogos';
+    } else if (info == title[4]) {
+      message = 'A Distribuidora de ${game.name} não possui demais jogos';
+    }
+    final snackBar = SnackBar(content: Text(message));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
   void _showModal(String title) {
     showModalBottomSheet(
       context: context,
@@ -89,7 +137,7 @@ class _GamePageState extends State<GamePage>
           return Container(
             constraints: BoxConstraints(
               maxHeight: MediaQuery.of(context).size.height *
-                  (0.1 * game.releaseDate!.length),
+                  (0.1 * game.platforms!.length),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -108,7 +156,8 @@ class _GamePageState extends State<GamePage>
                       itemBuilder: (ctx, i) {
                         return DateConsoleItem(
                           console: game.platforms![i].name,
-                          date: formattedDate(game.releaseDate![i]),
+                          date: DateFormatter.formatUnixDate(
+                              game.releaseDate![i]),
                         );
                       }),
                 ),
@@ -232,9 +281,12 @@ class _GamePageState extends State<GamePage>
                         Row(
                           children: [
                             Container(
+                              width: 300,
                               margin: const EdgeInsets.only(left: 10),
-                              child: Text(
+                              child: AutoSizeText(
                                 game.name.toUpperCase(),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18,
@@ -259,28 +311,16 @@ class _GamePageState extends State<GamePage>
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(left: 10.0),
-                              child: RatingBar.builder(
-                                initialRating: formattedRating(
-                                    game.totalRating!.toDouble()),
-                                minRating: 0,
-                                direction: Axis.horizontal,
-                                allowHalfRating: true,
-                                itemSize: 22,
-                                ignoreGestures: true,
-                                itemCount: 5,
-                                itemBuilder: (context, _) => Icon(
-                                  Icons.star,
-                                  color: Colors.amber,
-                                ),
-                                onRatingUpdate: (rating) {},
-                              ),
+                              child:
+                                  StarsBar(stars: game.totalRating!.toDouble()),
                             ),
                             SizedBox(
                               width: 10,
                             ),
                             game.totalRating! > 1
                                 ? Text(
-                                    formattedRating(game.totalRating!)
+                                    RatingFormmater.formattedRating(
+                                            game.totalRating!)
                                         .toStringAsFixed(2)
                                         .toString(),
                                     style: TextStyle(
@@ -295,17 +335,24 @@ class _GamePageState extends State<GamePage>
                         Padding(
                           padding: const EdgeInsets.only(left: 10.0, top: 6.0),
                           child: InkWell(
-                            onTap: () {
-                              game.releaseDate != null &&
-                                      game.videos!.isNotEmpty
-                                  ? _showModal('date')
-                                  : null;
-                            },
-                            child: Text(
-                              formattedDate(game.firstReleaseDate!),
-                              style: TextStyle(color: Colors.grey.shade500),
-                            ),
-                          ),
+                              onTap: () {
+                                game.releaseDate != null &&
+                                        game.videos!.isNotEmpty
+                                    ? _showModal('date')
+                                    : null;
+                              },
+                              child: game.firstReleaseDate! != -1
+                                  ? Text(
+                                      DateFormatter.formatUnixDate(
+                                          game.firstReleaseDate!),
+                                      style: TextStyle(
+                                          color: Colors.grey.shade500),
+                                    )
+                                  : Text(
+                                      'Jogo sem previsão de lançamento',
+                                      style: TextStyle(
+                                          color: Colors.grey.shade500),
+                                    )),
                         ),
                         SizedBox(
                           height: 30,
@@ -322,30 +369,42 @@ class _GamePageState extends State<GamePage>
                           children: [
                             DetailItem(
                               icon: Icons.list,
-                              title: 'Franquia'.toUpperCase(),
+                              title: title[0].toUpperCase(),
                               onPressed: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) => const ViewAllPage(
-                                //       title: 'TESTEEE',
-                                //     ),
-                                //   ),
-                                // );
+                                if (game.franchises!.isNotEmpty) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ViewAllPage(
+                                        title: title[0],
+                                        id: franchise,
+                                        type: 0,
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  notAvailable(title[0].toString());
+                                }
                               },
                             ),
                             DetailItem(
                               icon: Icons.extension,
-                              title: 'DLCs'.toUpperCase(),
+                              title: title[1].toUpperCase(),
                               onPressed: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) => const ViewAllPage(
-                                //       title: 'TESTEEE',
-                                //     ),
-                                //   ),
-                                // );
+                                if (game.dlcs!.isNotEmpty) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ViewAllPage(
+                                        title: title[1],
+                                        id: dlcs,
+                                        type: 1,
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  notAvailable(title[1].toString());
+                                }
                               },
                             ),
                           ],
@@ -355,7 +414,7 @@ class _GamePageState extends State<GamePage>
                           children: [
                             DetailItem(
                               icon: Icons.category,
-                              title: 'Versões'.toUpperCase(),
+                              title: title[2].toUpperCase(),
                               onPressed: () {
                                 // Navigator.push(
                                 //   context,
@@ -369,17 +428,23 @@ class _GamePageState extends State<GamePage>
                             ),
                             DetailItem(
                               icon: Icons.code,
-                              title: 'Produtora'.toUpperCase(),
-                              name: game.companies![0].name,
+                              title: title[3].toUpperCase(),
+                              name: game.companies!.isNotEmpty
+                                  ? game.companies![0].name
+                                  : 'Desconhecida',
                               onPressed: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) => const ViewAllPage(
-                                //       title: 'TESTEEE',
-                                //     ),
-                                //   ),
-                                // );
+                                game.companies!.isNotEmpty
+                                    ? Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const ViewAllPage(
+                                            title: 'TESTEEE',
+                                            page: 4,
+                                          ),
+                                        ),
+                                      )
+                                    : print('');
                               },
                             ),
                           ],
@@ -389,10 +454,10 @@ class _GamePageState extends State<GamePage>
                           children: [
                             DetailItem(
                               icon: Icons.publish,
-                              title: 'Distribuidora',
-                              name: game.companies!.length > 1
-                                  ? game.companies![1].name
-                                  : game.companies![0].name,
+                              title: title[4],
+                              name: game.companies!.isNotEmpty
+                                  ? publisher
+                                  : 'Desconhecida',
                               onPressed: () {
                                 // Navigator.push(
                                 //   context,
@@ -406,7 +471,7 @@ class _GamePageState extends State<GamePage>
                             ),
                             DetailItem(
                               icon: Icons.language,
-                              title: 'Idiomas'.toUpperCase(),
+                              title: title[5].toUpperCase(),
                               onPressed: () {
                                 _showModal('language');
                               },
@@ -453,46 +518,52 @@ class _GamePageState extends State<GamePage>
                             ),
                           ),
                         ),
-                        SizedBox(
-                          height: 30,
-                          child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: game.themes!.length,
-                              itemBuilder: (ctx, i) {
-                                return BadgeInformation(
-                                    information: game.themes![i].toString(),
-                                    onPressed: () {
-                                      // Navigator.push(
-                                      //   context,
-                                      //   MaterialPageRoute(
-                                      //     builder: (context) => const ViewAllPage(
-                                      //       title: 'aaaaa',
-                                      //     ),
-                                      //   ),
-                                      // );
-                                    });
-                              }),
-                        ),
-                        SizedBox(
-                          height: 30,
-                          child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: game.gameModes!.length,
-                              itemBuilder: (ctx, i) {
-                                return BadgeInformation(
-                                    information: game.gameModes![i].toString(),
-                                    onPressed: () {
-                                      // Navigator.push(
-                                      //   context,
-                                      //   MaterialPageRoute(
-                                      //     builder: (context) => const ViewAllPage(
-                                      //       title: 'aaaaa',
-                                      //     ),
-                                      //   ),
-                                      // );
-                                    });
-                              }),
-                        ),
+                        game.themes!.isNotEmpty
+                            ? SizedBox(
+                                height: 30,
+                                child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: game.themes!.length,
+                                    itemBuilder: (ctx, i) {
+                                      return BadgeInformation(
+                                          information:
+                                              game.themes![i].toString(),
+                                          onPressed: () {
+                                            // Navigator.push(
+                                            //   context,
+                                            //   MaterialPageRoute(
+                                            //     builder: (context) => const ViewAllPage(
+                                            //       title: 'aaaaa',
+                                            //     ),
+                                            //   ),
+                                            // );
+                                          });
+                                    }),
+                              )
+                            : Container(),
+                        game.gameModes!.isNotEmpty
+                            ? SizedBox(
+                                height: 30,
+                                child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: game.gameModes!.length,
+                                    itemBuilder: (ctx, i) {
+                                      return BadgeInformation(
+                                          information:
+                                              game.gameModes![i].toString(),
+                                          onPressed: () {
+                                            // Navigator.push(
+                                            //   context,
+                                            //   MaterialPageRoute(
+                                            //     builder: (context) => const ViewAllPage(
+                                            //       title: 'aaaaa',
+                                            //     ),
+                                            //   ),
+                                            // );
+                                          });
+                                    }),
+                              )
+                            : Container(),
                         const Padding(
                           padding: EdgeInsets.only(top: 10.0, left: 10.0),
                           child: Text(
@@ -595,7 +666,17 @@ class _GamePageState extends State<GamePage>
                       )
                     ],
                   ),
-                  const Text('Testeeee 3'),
+                  GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 8.0,
+                        mainAxisSpacing: 8.0,
+                      ),
+                      itemCount: game.similarGames!.length,
+                      itemBuilder: (ctx, i) {
+                        return GridGame(game: game.similarGames![i]);
+                      }),
                 ],
               ),
             ),
