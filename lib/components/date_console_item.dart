@@ -1,12 +1,15 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class DateConsoleItem extends StatefulWidget {
   final String console;
   final String date;
+  final String? logo;
   const DateConsoleItem({
     super.key,
     required this.console,
     required this.date,
+    this.logo,
   });
 
   @override
@@ -17,8 +20,17 @@ class _DateConsoleItemState extends State<DateConsoleItem> {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        Padding(
+          padding: EdgeInsets.all(10.0),
+          child: CachedNetworkImage(
+            imageUrl:
+                "https://images.igdb.com/igdb/image/upload/t_logo_med/${widget.logo}.png",
+            placeholder: (context, url) => CircularProgressIndicator(),
+            width: 50,
+            height: 50,
+          ),
+        ),
         Padding(
           padding: const EdgeInsets.only(top: 10.0, right: 10.0),
           child: Container(

@@ -164,7 +164,7 @@ Future<List<Game>> fetchGamesByIdsCarousel(List<int> gameIds) async {
 
 Future<GameDetails> gameDetails(int id) async {
   Response response = await fetch("games",
-      'fields artworks.image_id, cover.image_id, dlcs.cover.image_id, dlcs.name, first_release_date, franchises.id, game_modes.name, genres.name, language_supports.language.name, language_supports.language_support_type.name, involved_companies.company.logo.image_id, involved_companies.company.name, name, platforms.name, platforms.platform_logo.image_id, release_dates.date, screenshots.image_id, similar_games.cover.image_id, similar_games.name, status, storyline, summary, themes.name, total_rating, total_rating_count, url, videos.name, videos.video_id, websites.category, websites.url; where id = $id;');
+      'fields artworks.image_id, cover.image_id, dlcs.cover.image_id, dlcs.name, first_release_date, franchises.id, game_modes.name, genres.name, language_supports.language.id, language_supports.language.name, language_supports.language_support_type.id, language_supports.language_support_type.name, involved_companies.company.logo.image_id, involved_companies.company.name, name, platforms.name, platforms.platform_logo.image_id, release_dates.date, screenshots.image_id, similar_games.cover.image_id, similar_games.name, status, storyline, summary, themes.name, total_rating, total_rating_count, url, videos.name, videos.video_id, websites.category, websites.url; where id = $id;');
 
   return GameDetails.fromMap(jsonDecode(response.body)[0]);
 }

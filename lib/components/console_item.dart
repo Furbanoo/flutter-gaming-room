@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gameroom/models/consoles.dart';
-import 'package:gameroom/pages/view_all_page.dart';
 import 'package:provider/provider.dart';
 
 class ConsoleItem extends StatefulWidget {

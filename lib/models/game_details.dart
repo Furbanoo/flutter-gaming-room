@@ -17,10 +17,8 @@ class GameDetails extends Game {
   List? similarGames;
   int? status;
   String? storyline;
-
   List? themes;
   int? totalRatingCount;
-  String? url;
   List? videos;
   List? websites;
 
@@ -47,7 +45,6 @@ class GameDetails extends Game {
     this.storyline,
     this.themes,
     this.totalRatingCount,
-    this.url,
     this.videos,
     this.websites,
   });
@@ -78,8 +75,11 @@ class GameDetails extends Game {
       'genres': genres?.map((genre) => {"name": genre}).toList(),
       'language_supports': languageSupports
           ?.map((language) => {
-                "language": {"name": language.name},
-                "language_support_type": {"name": language.nameType}
+                "language": {"name": language.name, "id": language.id},
+                "language_support_type": {
+                  "name": language.nameType,
+                  "id": language.id
+                }
               })
           .toList(),
       'platforms': platforms
@@ -98,7 +98,6 @@ class GameDetails extends Game {
       'themes': themes?.map((theme) => {"name": theme}).toList(),
       'total_rating': totalRating,
       'total_rating_count': totalRatingCount,
-      'url': url,
       'videos': videos
           ?.map((video) => {"name": video.name, "video_id": video.videoId})
           .toList(),
@@ -132,7 +131,7 @@ class GameDetails extends Game {
       genres: map['genres']?.map((genre) => genre['name']).toList() ?? [],
       languageSupports: map['language_supports']
               ?.map((language) => Language(language['language']?['name'],
-                  language['language_support_type']?['name']))
+                  language['language_support_type']?['id']))
               .toList() ??
           [],
       platforms: map['platforms']
@@ -141,7 +140,7 @@ class GameDetails extends Game {
               .toList() ??
           [],
       releaseDate:
-          map['release_dates']?.map((date) => date['date']).toList() ?? -1,
+          map['release_dates']?.map((date) => date['date']).toList() ?? [],
       screenshots: map['screenshots']
               ?.map((screenshot) => screenshot['image_id'])
               .toList() ??
@@ -154,7 +153,6 @@ class GameDetails extends Game {
       summary: map['summary'] ?? 'No Description',
       themes: map['themes']?.map((theme) => theme['name']).toList() ?? [],
       totalRatingCount: map['total_rating_count'] ?? 0,
-      url: map['url'],
       videos: map['videos']
               ?.map((video) => Video(video['name'], video['video_id']))
               .toList() ??
@@ -200,7 +198,7 @@ class Company {
 
 class Language {
   String name;
-  String nameType;
+  int nameTypeId;
 
-  Language(this.name, this.nameType);
+  Language(this.name, this.nameTypeId);
 }

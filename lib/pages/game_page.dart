@@ -1,14 +1,13 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:gameroom/components/bagde.dart';
 import 'package:gameroom/components/date_console_item.dart';
 import 'package:gameroom/components/detail_item.dart';
 import 'package:gameroom/components/grid_game.dart';
 import 'package:gameroom/components/stars_bar.dart';
-import 'package:gameroom/components/video_player.dart';
+import 'package:gameroom/components/website_item.dart';
 import 'package:gameroom/models/date_formatter.dart';
 import 'package:gameroom/models/game_details.dart';
 import 'package:gameroom/models/item.dart';
@@ -16,6 +15,7 @@ import 'package:gameroom/models/rate_formatter.dart';
 import 'package:gameroom/pages/view_all_page.dart';
 import 'package:gameroom/services/igdb_api.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class GamePage extends StatefulWidget {
   final int id;
@@ -32,12 +32,14 @@ class GamePage extends StatefulWidget {
 class _GamePageState extends State<GamePage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  YoutubePlayerController? _controller;
   bool _isFavorite = false;
   bool _isLoading = true;
   late GameDetails game;
   String publisher = '';
   List<int> dlcs = [];
   List<int> franchise = [];
+  List<Map<String, int>> language = [];
 
   final tabs = <Item>[
     Item(id: 0, name: 'DESCRIÇÃO'),
@@ -48,9 +50,9 @@ class _GamePageState extends State<GamePage>
   final List<String> title = [
     'Franquia',
     'DLCs',
-    'Versões',
     'Produtora',
     'Distribuidora',
+    'Websites',
     'Idiomas',
   ];
 
@@ -58,12 +60,15 @@ class _GamePageState extends State<GamePage>
   void initState() {
     super.initState();
     getData(widget.id);
+
     _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
   void dispose() {
     super.dispose();
+    _controller!.dispose();
+    _tabController.dispose();
   }
 
   getData(gameId) async {
@@ -76,6 +81,9 @@ class _GamePageState extends State<GamePage>
     });
     if (mounted) {
       setState(() {
+        if (game.videos!.isNotEmpty) {
+          getVideo(game.videos![0].videoId);
+        }
         if (game.companies!.isNotEmpty) {
           if (game.companies!.length > 1) {
             publisher = game.companies![1].name;
@@ -90,15 +98,30 @@ class _GamePageState extends State<GamePage>
           }
         }
 
+        print('ID do jogo: ${game.id}');
+        print('Tamanho ${game.languageSupports!.length}');
+        print('Language Name: ${game.languageSupports![0].name}');
+        print('Language Type: ${game.languageSupports![0].nameTypeId}');
+
         if (game.franchises!.isNotEmpty) {
           for (int i = 0; i < game.franchises!.length; i++) {
             franchise.add(game.franchises![i]);
           }
         }
-        print(franchise);
-        print('ID: ${game.id}');
       });
     }
+  }
+
+  void getVideo(String id) {
+    _controller = YoutubePlayerController(
+      initialVideoId: game.videos![0].videoId,
+      flags: const YoutubePlayerFlags(
+        autoPlay: true,
+        mute: false,
+        loop: true,
+        enableCaption: false,
+      ),
+    );
   }
 
   void _toggleFavorite() {
@@ -155,6 +178,7 @@ class _GamePageState extends State<GamePage>
                       itemCount: game.platforms!.length,
                       itemBuilder: (ctx, i) {
                         return DateConsoleItem(
+                          logo: game.platforms![i].logo,
                           console: game.platforms![i].name,
                           date: DateFormatter.formatUnixDate(
                               game.releaseDate![i]),
@@ -166,7 +190,64 @@ class _GamePageState extends State<GamePage>
           );
         }
         if (title == "language") {
-          return const Center();
+          return Container(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.5,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const Padding(
+                  padding: EdgeInsets.only(top: 20.0, bottom: 10.0),
+                  child: Text(
+                    'Idiomas Suportados',
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
+                  ),
+                ),
+                DataTable(
+                  columns: <DataColumn>[
+                    DataColumn(label: Text('Idioma')),
+                    DataColumn(label: Text('Dublagem')),
+                    DataColumn(label: Text('Legenda')),
+                    DataColumn(label: Text('Interface')),
+                  ],
+                  rows: [],
+                )
+              ],
+            ),
+          );
+        }
+        if (title == "website") {
+          return Container(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height *
+                      (0.1 * game.websites!.length) +
+                  100,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const Padding(
+                  padding: EdgeInsets.only(top: 20.0, bottom: 10.0),
+                  child: Text(
+                    'Websites Oficiais',
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                      itemCount: game.websites!.length,
+                      itemBuilder: (ctx, i) {
+                        return WebsiteItem(
+                            category: game.websites![i].category,
+                            url: game.websites![i].url);
+                      }),
+                ),
+              ],
+            ),
+          );
         }
         if (title == "storyline") {
           return Container(
@@ -222,7 +303,10 @@ class _GamePageState extends State<GamePage>
             Stack(
               children: [
                 game.videos != null && game.videos!.isNotEmpty
-                    ? VideoPlayer(game.videos?[0].videoId)
+                    ? YoutubePlayer(
+                        controller: _controller!,
+                        showVideoProgressIndicator: true,
+                      )
                     : Container(
                         height: 240,
                         width: MediaQuery.of(context).size.width,
@@ -413,8 +497,11 @@ class _GamePageState extends State<GamePage>
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             DetailItem(
-                              icon: Icons.category,
+                              icon: Icons.publish,
                               title: title[2].toUpperCase(),
+                              name: game.companies!.isNotEmpty
+                                  ? publisher
+                                  : 'Desconhecida',
                               onPressed: () {
                                 // Navigator.push(
                                 //   context,
@@ -453,20 +540,10 @@ class _GamePageState extends State<GamePage>
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             DetailItem(
-                              icon: Icons.publish,
-                              title: title[4],
-                              name: game.companies!.isNotEmpty
-                                  ? publisher
-                                  : 'Desconhecida',
+                              icon: Icons.web,
+                              title: title[4].toUpperCase(),
                               onPressed: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) => const ViewAllPage(
-                                //       title: 'TESTEEE',
-                                //     ),
-                                //   ),
-                                // );
+                                _showModal('website');
                               },
                             ),
                             DetailItem(
